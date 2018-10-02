@@ -3,3 +3,4 @@ project/project/
 project/target/
 .idea
 .DS_Store
+node_modules

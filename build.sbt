@@ -1,4 +1,4 @@
-enablePlugins(ScalaJSPlugin)
+enablePlugins(ScalaJSPlugin, WorkbenchPlugin)
 
 name := "pwa.scalajs"
 organization := "objektwerks"
@@ -7,6 +7,7 @@ scalaVersion := "2.12.7"
 libraryDependencies ++= {
   Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.9.6",
+    "com.lihaoyi" %%% "scalatags" % "0.6.7",
     "org.scalatest" %% "scalatest" % "3.0.5" % "test"
   )
 }
