@@ -1,5 +1,3 @@
-import org.scalajs.core.tools.linker.ModuleInitializer
-
 enablePlugins(ScalaJSPlugin, WorkbenchPlugin)
 
 name := "pwa.scalajs"
