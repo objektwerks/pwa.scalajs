@@ -1,17 +1,63 @@
-enablePlugins(ScalaJSPlugin, WorkbenchPlugin)
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 name := "pwa.scalajs"
 organization := "objektwerks"
 version := "0.1-SNAPSHOT"
-scalaVersion := "2.12.7"
-libraryDependencies ++= {
-  Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.6",
-    "com.lihaoyi" %%% "scalatags" % "0.6.7",
-    "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+
+val catsVersion = "1.4.0"
+val doobieVersion = "0.5.3"
+val http4sVersion = "0.18.16"
+val circeVersion = "0.9.3"
+
+lazy val js = (project in file("js"))
+  .enablePlugins(ScalaJSPlugin, WorkbenchPlugin)
+  .settings(
+    scalaVersion := "2.12.7",
+    scalaJSUseMainModuleInitializer := true,
+    libraryDependencies ++= Seq(
+      "org.scala-js" %%% "scalajs-dom" % "0.9.6",
+      "com.lihaoyi" %%% "scalatags" % "0.6.7"
+    )
+  ) dependsOn sharedJS
+
+
+lazy val jvm = (project in file("jvm"))
+  .settings(
+    scalaVersion := "2.12.7",
+    libraryDependencies ++= Seq(
+      "org.typelevel" % "cats-core_2.12" % catsVersion,
+      "org.typelevel" % "cats-effect_2.12" % "0.10.1",
+      "com.chuusai" % "shapeless_2.12" % "2.3.3",
+      "org.tpolecat" % "doobie-core_2.12" % doobieVersion,
+      "org.tpolecat" % "doobie-h2_2.12" % doobieVersion,
+      "org.tpolecat" % "doobie-hikari_2.12" % doobieVersion,
+      "org.http4s" % "http4s-blaze-client_2.12" % http4sVersion,
+      "org.http4s" % "http4s-blaze-server_2.12" % http4sVersion,
+      "org.http4s" % "http4s-circe_2.12" % http4sVersion,
+      "org.http4s" % "http4s-dsl_2.12" % http4sVersion,
+      "org.http4s" % "http4s-server_2.12" % http4sVersion,
+      "co.fs2" % "fs2-core_2.12" % "0.10.5",
+      "com.github.pureconfig" % "pureconfig_2.12" % "0.9.2",
+      "com.typesafe.scala-logging" % "scala-logging_2.12" % "3.9.0",
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
+      "org.tpolecat" % "doobie-scalatest_2.12" % doobieVersion % "test",
+      "org.scalatest" % "scalatest_2.12" % "3.0.5" % "test"
+    )
+  ) dependsOn sharedJVM
+
+lazy val shared = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
+  .settings(
+    scalaVersion := "2.12.7",
+    libraryDependencies ++= Seq(
+      "io.circe" % "circe-core_2.12" % circeVersion,
+      "io.circe" % "circe-generic_2.12" % circeVersion
+    )
   )
-}
-scalaJSUseMainModuleInitializer := true
+
+lazy val sharedJVM = shared.jvm
+lazy val sharedJS = shared.js
+
 scalacOptions ++= Seq(
   "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
   "-encoding", "utf-8",                // Specify character encoding used by source files.
