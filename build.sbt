@@ -37,6 +37,8 @@ lazy val jvm = (project in file("jvm"))
       "org.http4s" % "http4s-dsl_2.12" % http4sVersion,
       "org.http4s" % "http4s-server_2.12" % http4sVersion,
       "co.fs2" % "fs2-core_2.12" % "0.10.5",
+      "io.circe" % "circe-core_2.12" % circeVersion,
+      "io.circe" % "circe-generic_2.12" % circeVersion,
       "com.github.pureconfig" % "pureconfig_2.12" % "0.9.2",
       "com.typesafe.scala-logging" % "scala-logging_2.12" % "3.9.0",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
@@ -50,6 +52,8 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .settings(
     scalaVersion := "2.12.7",
     libraryDependencies ++= Seq(
+      "org.http4s" % "http4s-circe_2.12" % http4sVersion,
+      "org.typelevel" % "cats-effect_2.12" % "0.10.1",
       "io.circe" % "circe-core_2.12" % circeVersion,
       "io.circe" % "circe-generic_2.12" % circeVersion
     )
