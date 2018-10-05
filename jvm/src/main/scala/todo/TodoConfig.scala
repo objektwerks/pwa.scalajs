@@ -10,9 +10,7 @@ object TodoConfig {
 
   case class DatabaseConfig(schema: String, driver: String, url: String, user: String, password: String)
 
-  case class CorsConfig(anyOrigin: Boolean, allowCredentials: Boolean, maxAge: Long, allowedOrigins: Set[String], allowedMethods: Set[String])
-
-  case class Config(server: ServerConfig, database: DatabaseConfig, cors: CorsConfig)
+  case class Config(server: ServerConfig, database: DatabaseConfig)
 
   def load(confFilePath: String): IO[Config] = {
     IO {
