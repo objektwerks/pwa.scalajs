@@ -59,8 +59,10 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
     )
   )
 
-lazy val sharedJVM = shared.jvm
 lazy val sharedJS = shared.js
+lazy val sharedJVM = shared.jvm.settings(
+  (resources in Compile) += (fastOptJS in (sharedJS, Compile)).value.data
+)
 
 scalacOptions ++= Seq(
   "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
