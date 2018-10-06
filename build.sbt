@@ -4,26 +4,39 @@ name := "pwa.scalajs"
 organization := "objektwerks"
 version := "0.1-SNAPSHOT"
 
+val scala_version = "2.12.7"
 val catsVersion = "1.4.0"
 val doobieVersion = "0.5.3"
 val http4sVersion = "0.18.16"
 val circeVersion = "0.9.3"
 
+lazy val shared = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
+  .settings(
+    scalaVersion := scala_version,
+    libraryDependencies ++= Seq(
+      "org.http4s" % "http4s-circe_2.12" % http4sVersion,
+      "org.typelevel" % "cats-effect_2.12" % "0.10.1",
+      "io.circe" % "circe-core_2.12" % circeVersion,
+      "io.circe" % "circe-generic_2.12" % circeVersion
+    )
+  )
+
 lazy val js = (project in file("js"))
   .enablePlugins(ScalaJSPlugin, WorkbenchPlugin)
   .settings(
-    scalaVersion := "2.12.7",
+    scalaVersion := scala_version,
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.6",
       "com.lihaoyi" %%% "scalatags" % "0.6.7"
     )
-  ) dependsOn sharedJS
+  ) dependsOn shared.js
 
 
 lazy val jvm = (project in file("jvm"))
   .settings(
-    scalaVersion := "2.12.7",
+    scalaVersion := scala_version,
     libraryDependencies ++= Seq(
       "org.typelevel" % "cats-core_2.12" % catsVersion,
       "org.typelevel" % "cats-effect_2.12" % "0.10.1",
@@ -45,24 +58,7 @@ lazy val jvm = (project in file("jvm"))
       "org.tpolecat" % "doobie-scalatest_2.12" % doobieVersion % "test",
       "org.scalatest" % "scalatest_2.12" % "3.0.5" % "test"
     )
-  ) dependsOn sharedJVM
-
-lazy val shared = crossProject(JSPlatform, JVMPlatform)
-  .crossType(CrossType.Pure)
-  .settings(
-    scalaVersion := "2.12.7",
-    libraryDependencies ++= Seq(
-      "org.http4s" % "http4s-circe_2.12" % http4sVersion,
-      "org.typelevel" % "cats-effect_2.12" % "0.10.1",
-      "io.circe" % "circe-core_2.12" % circeVersion,
-      "io.circe" % "circe-generic_2.12" % circeVersion
-    )
-  )
-
-lazy val sharedJS = shared.js
-lazy val sharedJVM = shared.jvm.settings(
-  (resources in Compile) += (fastOptJS in (sharedJS, Compile)).value.data
-)
+  ) dependsOn shared.jvm
 
 scalacOptions ++= Seq(
   "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
