@@ -8,16 +8,14 @@ val doobieVersion = "0.5.3"
 val http4sVersion = "0.18.16"
 val circeVersion = "0.9.3"
 
-scalaVersion in ThisBuild := "2.12.7"
-
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "objektwerks",
   version := "0.1-SNAPSHOT",
   scalaVersion := "2.12.7"
 )
 
-lazy val root = project.in(file(".")).
-  aggregate(sharedJS, sharedJVM, js, jvm)
+lazy val root = project.in(file("."))
+  .aggregate(sharedJS, sharedJVM, js, jvm)
   .settings(commonSettings)
   .settings(
     publish := {},
