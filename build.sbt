@@ -21,9 +21,6 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
     )
   )
 
-lazy val sharedJS = shared.js
-lazy val sharedJVM = shared.jvm
-
 lazy val js = (project in file("js"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
@@ -33,7 +30,7 @@ lazy val js = (project in file("js"))
       "org.scala-js" %%% "scalajs-dom" % "0.9.6",
       "com.lihaoyi" %%% "scalatags" % "0.6.7"
     )
-  ) dependsOn sharedJS
+  ) dependsOn shared.js
 
 
 lazy val jvm = (project in file("jvm"))
@@ -60,8 +57,8 @@ lazy val jvm = (project in file("jvm"))
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",
       "org.scalatest" %% "scalatest" % "3.0.5" % "test"
     ),
-    (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data
-  ) dependsOn sharedJVM
+    (resources in Compile) += (fullOptJS in (js, Compile)).value.data
+  ) dependsOn (shared.jvm, js)
 
 scalacOptions ++= Seq(
   "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
