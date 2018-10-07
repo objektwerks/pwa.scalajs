@@ -1,11 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Todo</title>
         <meta charset="UTF-8">
+        <meta name="description" content="Todo">
+        <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=5.0">
+        <meta name="theme-color" content="#000080">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#000080">
+        <meta name="apple-mobile-web-app-title" content="Todo">
+        <link rel="apple-touch-startup-image" href="logo-512.png">
+        <link rel="apple-touch-icon" sizes="170x170" href="logo-170.png">
+        <link rel="apple-touch-icon" sizes="341x341" href="logo-341.png">
+        <link rel="apple-touch-icon" sizes= "512x512" href="logo-512.png">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="w3c.4.10.css">
+        <link rel="manifest" href="manifest.webmanifest">
     </head>
     <body>
-        <div id='content'></div>
+        <img src="logo.png" alt="Todo">
+        <div class="w3-container w3-indigo">
+            <h3>Todo</h3>
+        </div>
+        <div class="w3-container" style="padding-top: 10px; padding-bottom: 10px">
+            <div class="w3-row">
+                <div class="w3-col" style="width:20%"><label>Number</label></div>
+                <div class="w3-col" style="width:80%"><input id="todo-id" class="w3-input w3-light-gray" type="text" readonly/></div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col" style="width:20%"><label>Opened</label></div>
+                <div class="w3-col" style="width:80%"><input id="todo-opened" class="w3-input w3-light-gray" type="datetime-local" readonly/></div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col" style="width:20%"><label>Closed</label></div>
+                <div class="w3-col" style="width:80%"><input id="todo-closed" class="" type="datetime-local"/></div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col" style="width:20%"><label>Todo</label></div>
+                <div class="w3-col" style="width:80%"><input id="todo-task" class="" type="text"/></div>
+            </div>
+        </div>
+        <div class="w3-container w3-indigo">
+            <h3>Todos</h3>
+        </div>
+        <div class="w3-container" style="padding-top: 10px; padding-bottom: 10px">
+            <ul id="todo-list" class="w3-ul w3-hoverable">
+            </ul>
+        </div>
+        <div class="w3-container w3-indigo">
+            <h3>New</h3>
+        </div>
+        <div class="w3-container" style="padding-top: 10px">
+            <div class="w3-row">
+                <div class="w3-col" style="width:20%"><label>Enter:</label></div>
+                <div class="w3-col" style="width:80%"><input id="add-todo" class="w3-input w3-hover-light-gray" type="text"/></div>
+            </div>
+        </div>
+        <hr/>
         <script type="text/javascript" src="../sharedjs-opt.js"></script>
         <script type="text/javascript" src="../js-opt.js"></script>
     </body>
