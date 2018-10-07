@@ -8,11 +8,15 @@ import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 object TodoClient{
   @JSExport
   def init(): Unit = {
-    val content = document.getElementById("content")
+    version()
+  }
+
+  def version(): Unit = {
+    val version = document.getElementById("version")
     val p = document.createElement("p")
-    val text = document.createTextNode("Todo!")
+    val text = document.createTextNode("V1")
     val node = p.appendChild(text)
-    content.appendChild(node)
+    version.appendChild(node)
     ()
   }
 }
