@@ -73,8 +73,9 @@ lazy val jvm = (project in file("jvm"))
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",
       "org.scalatest" %% "scalatest" % "3.0.5" % "test"
     ),
-    (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data
-  ) dependsOn(sharedJS, sharedJVM)
+    (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data,
+    (resources in Compile) += (fullOptJS in (js, Compile)).value.data
+  ) dependsOn(sharedJS, sharedJVM, js)
 
 scalacOptions ++= Seq(
   "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
