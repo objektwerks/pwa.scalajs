@@ -2,10 +2,11 @@ package todo
 
 import org.scalajs.dom._
 
-import scala.scalajs.js.annotation.JSExportTopLevel
+import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 
-@JSExportTopLevel("todo.TodoClient")
+@JSExportTopLevel("TodoClient")
 object TodoClient{
+  @JSExport
   def init(): Unit = {
     val content = document.getElementById("content")
     val p = document.createElement("p")
