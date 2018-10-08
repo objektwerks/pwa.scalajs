@@ -89,8 +89,7 @@ lazy val js = (project in file("js"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.6",
-      "com.lihaoyi" %%% "scalatags" % "0.6.7"
+      "org.scala-js" %%% "scalajs-dom" % "0.9.6"
     )
   ) dependsOn sharedJS
 
