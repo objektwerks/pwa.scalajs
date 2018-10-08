@@ -5,7 +5,7 @@ import doobie.hikari.HikariTransactor
 import fs2.StreamApp.ExitCode
 import fs2.{Stream, StreamApp}
 import org.http4s.server.blaze._
-import org.http4s.server.middleware.{CORS, CORSConfig}
+import org.http4s.server.middleware.{CORS, CORSConfig, GZip}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -25,10 +25,12 @@ object TodoApp extends StreamApp[IO] {
       )
       xa <- Stream.eval(HikariTransactor.newHikariTransactor[IO](db.driver, db.url, db.user, db.password))
       repository = TodoRepository(xa, db.schema)
-      service = TodoService(repository).instance
+      todoService = TodoService(repository).instance
+      webService = WebService().instance
       exitCode <- BlazeBuilder[IO]
         .bindHttp(server.port, server.host)
-        .mountService(CORS(service, corsx), "/api/v1")
+        .mountService(GZip(CORS(todoService, corsx)), "/api/v1")
+        .mountService(GZip(webService))
         .serve
     } yield {
       sys.addShutdownHook(requestShutdown.unsafeRunSync)
