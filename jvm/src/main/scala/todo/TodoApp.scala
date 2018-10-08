@@ -26,11 +26,11 @@ object TodoApp extends StreamApp[IO] {
       xa <- Stream.eval(HikariTransactor.newHikariTransactor[IO](db.driver, db.url, db.user, db.password))
       repository = TodoRepository(xa, db.schema)
       todoService = TodoService(repository).instance
-      webService = WebService().instance
       exitCode <- BlazeBuilder[IO]
         .bindHttp(server.port, server.host)
         .mountService(GZip(CORS(todoService, corsx)), "/api/v1")
-        .mountService(GZip(CORS(webService)))
+        .mountService(GZip(CORS(WebServices.indexServiceWithNoCacheHeader)), "/")
+        .mountService(GZip(CORS(WebServices.resourceServiceWithNoCacheHeader)), "/")
         .serve
     } yield {
       sys.addShutdownHook(requestShutdown.unsafeRunSync)
