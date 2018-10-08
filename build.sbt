@@ -94,7 +94,6 @@ lazy val js = (project in file("js"))
     )
   ) dependsOn sharedJS
 
-
 lazy val jvm = (project in file("jvm"))
   .settings(commonSettings)
   .settings(
