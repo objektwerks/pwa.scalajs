@@ -30,7 +30,7 @@ object TodoApp extends StreamApp[IO] {
       exitCode <- BlazeBuilder[IO]
         .bindHttp(server.port, server.host)
         .mountService(GZip(CORS(todoService, corsx)), "/api/v1")
-        .mountService(GZip(webService))
+        .mountService(GZip(CORS(webService)))
         .serve
     } yield {
       sys.addShutdownHook(requestShutdown.unsafeRunSync)
