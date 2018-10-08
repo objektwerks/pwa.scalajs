@@ -93,6 +93,15 @@ lazy val js = (project in file("js"))
     )
   ) dependsOn sharedJS
 
+lazy val sw = (project in file("sw"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.scala-js" %%% "scalajs-dom" % "0.9.6"
+    )
+  ) dependsOn js
+
 lazy val jvm = (project in file("jvm"))
   .settings(commonSettings)
   .settings(
@@ -118,5 +127,6 @@ lazy val jvm = (project in file("jvm"))
       "org.scalatest" %% "scalatest" % "3.0.5" % "test"
     ),
     (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data,
-    (resources in Compile) += (fullOptJS in (js, Compile)).value.data
-  ) dependsOn(sharedJS, sharedJVM, js)
+    (resources in Compile) += (fullOptJS in (js, Compile)).value.data,
+    (resources in Compile) += (fullOptJS in (sw, Compile)).value.data
+  ) dependsOn(sharedJS, sharedJVM, js, sw)

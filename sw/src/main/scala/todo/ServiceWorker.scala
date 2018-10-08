@@ -1,0 +1,5 @@
+package todo
+
+object ServiceWorker {
+
+}
