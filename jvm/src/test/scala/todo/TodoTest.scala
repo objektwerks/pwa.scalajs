@@ -12,7 +12,6 @@ import io.circe.syntax._
 import org.http4s.circe._
 import org.http4s.client.blaze.Http1Client
 import org.http4s.server.blaze.BlazeBuilder
-import org.http4s.server.middleware.CORS
 import org.http4s.{Method, Request, Uri}
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
 
@@ -25,7 +24,7 @@ class TodoTest extends FunSuite with BeforeAndAfterAll with IOChecker {
   val service = TodoService(repository).instance
   val server = BlazeBuilder[IO]
     .bindHttp(conf.getInt("test.port"), conf.getString("test.host"))
-    .mountService(CORS(service), "/api/v1")
+    .mountService(service, "/api/v1")
     .start
     .unsafeRunSync
   val client = Http1Client[IO]().unsafeRunSync

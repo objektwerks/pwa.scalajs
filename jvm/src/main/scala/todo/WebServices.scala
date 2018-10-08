@@ -21,7 +21,6 @@ object WebServices {
   }
   val indexServiceWithNoCacheHeader = addHeader(indexService, noCacheHeader)
 
-
   private val resourceService = HttpService[IO] {
     case request @ GET -> Root / path if List(".ico", ".png", ".css", ".js", ".webmanifest")
       .exists(path.endsWith) => StaticFile.fromResource("/" + path, Some(request))
