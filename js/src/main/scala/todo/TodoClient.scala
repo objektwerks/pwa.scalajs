@@ -17,19 +17,21 @@ object TodoClient {
 
   def registerServiceWorker(): Unit = {
     toServiceWorkerNavigator(window.navigator)
-      .serviceWorker.register("/sw-opt.js")
-      .toFuture.onComplete {
-      case Success(registration) => registration.update()
-      case Failure(exception) => println(exception)
-    }
+      .serviceWorker
+      .register("/sw-opt.js")
+      .toFuture
+      .onComplete {
+        case Success(registration) => registration.update()
+        case Failure(exception) => println(exception)
+      }
   }
 
   def version(): Unit = {
-    val version = document.getElementById("version")
+    val div = document.getElementById("version")
     val p = document.createElement("p")
     val text = document.createTextNode("V1")
     val node = p.appendChild(text)
-    version.appendChild(node)
+    div.appendChild(node)
     ()
   }
 }
