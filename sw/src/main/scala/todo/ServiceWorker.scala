@@ -1,5 +1,6 @@
 package todo
 
+import org.scalajs.dom.experimental.serviceworkers.ExtendableEvent
 import org.scalajs.dom.experimental.serviceworkers.ServiceWorkerGlobalScope._
 import org.scalajs.dom.experimental.{Request, RequestInfo, Response}
 
@@ -31,13 +32,14 @@ object ServiceWorker {
     "sw-opt.js"
   ).toJSArray
 
-  def toCache(): Unit = {
+  def toCache(): Future[Unit] = {
     self.caches.open(todoCache)
       .toFuture
       .onComplete {
         case Success(cache) => println("toCache: caching assets..."); cache.addAll(todoAssets)
         case Failure(exception) => println(s"toCache: failed > $exception")
       }
+    Future.successful(())
   }
 
   def fromCache(request: Request): Future[Response] = {
@@ -59,4 +61,9 @@ object ServiceWorker {
       }
     ()
   }
+
+  self.addEventListener("install", (event: ExtendableEvent) => {
+    println(s"install: service worker installed > $event")
+    event.waitUntil(toCache().toJSPromise)
+  })
 }
