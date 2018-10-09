@@ -1,8 +1,9 @@
 package todo
 
-import org.scalajs.dom.experimental.serviceworkers.ExtendableEvent
 import org.scalajs.dom.experimental.serviceworkers.ServiceWorkerGlobalScope._
+import org.scalajs.dom.experimental.serviceworkers.{ExtendableEvent, FetchEvent}
 import org.scalajs.dom.experimental.{Request, RequestInfo, Response}
+import org.scalajs.dom.experimental.Fetch._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -71,5 +72,16 @@ object ServiceWorker {
     println(s"activate: service worker activated > $event")
     invalidateCache()
     self.clients.claim()
+  })
+
+  self.addEventListener("fetch", (event: FetchEvent) => {
+    fromCache(event.request).onComplete {
+      case Success(response) =>
+        println(s"fetch: in cache > ${event.request.url}")
+        event.respondWith(response)
+      case Failure(_) =>
+        println(s"fetch: not in cache, calling server... > ${event.request.url}")
+        fetch(event.request).toFuture.map(response => event.respondWith(response))
+    }
   })
 }
