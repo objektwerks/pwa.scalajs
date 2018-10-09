@@ -97,6 +97,7 @@ lazy val sw = (project in file("sw"))
   .enablePlugins(ScalaJSPlugin)
   .settings(commonSettings)
   .settings(
+    scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.6"
     )
