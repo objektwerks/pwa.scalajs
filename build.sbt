@@ -62,7 +62,7 @@ lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
 )
 
 lazy val root = project.in(file("."))
-  .aggregate(sharedJS, sharedJVM, js, jvm)
+  .aggregate(sharedJS, sharedJVM, js, sw, jvm)
   .settings(commonSettings)
   .settings(
     publish := {},
@@ -100,7 +100,7 @@ lazy val sw = (project in file("sw"))
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.6"
     )
-  ) dependsOn js
+  )
 
 lazy val jvm = (project in file("jvm"))
   .settings(commonSettings)
