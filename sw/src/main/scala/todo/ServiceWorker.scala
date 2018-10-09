@@ -66,4 +66,10 @@ object ServiceWorker {
     println(s"install: service worker installed > $event")
     event.waitUntil(toCache().toJSPromise)
   })
+
+  self.addEventListener("activate", (event: ExtendableEvent) => {
+    println(s"activate: service worker activated > $event")
+    invalidateCache()
+    self.clients.claim()
+  })
 }
