@@ -1,9 +1,10 @@
 package todo
 
-import org.scalajs.dom.experimental.RequestInfo
 import org.scalajs.dom.experimental.serviceworkers.ServiceWorkerGlobalScope._
+import org.scalajs.dom.experimental.{Request, RequestInfo, Response}
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters._
 import scala.util.{Failure, Success}
@@ -35,7 +36,27 @@ object ServiceWorker {
       .toFuture
       .onComplete {
         case Success(cache) => println("toCache: caching assets..."); cache.addAll(todoAssets)
-        case Failure(exception) => println(exception)
+        case Failure(exception) => println(s"toCache: failed > $exception")
       }
+  }
+
+  def fromCache(request: Request): Future[Response] = {
+    self.caches.`match`(request)
+      .toFuture
+      .asInstanceOf[Future[Response]]
+      .map { response: Response =>
+          println(s"fromCache: matched request > ${request.url}")
+          response
+      }
+  }
+
+  def invalidateCache(): Unit =  {
+    self.caches.delete(todoCache)
+      .toFuture
+      .map { invalidatedCache =>
+        println(s"invalidateCache: cache invalidated?', $invalidatedCache")
+        if (invalidatedCache) toCache()
+      }
+    ()
   }
 }
