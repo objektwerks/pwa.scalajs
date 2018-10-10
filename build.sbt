@@ -75,9 +75,7 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .settings(
     libraryDependencies ++= Seq(
       "org.http4s" %% "http4s-circe" % http4sVersion,
-      "org.typelevel" %% "cats-effect" % "0.10.1",
-      "io.circe" %% "circe-core" % circeVersion,
-      "io.circe" %% "circe-generic" % circeVersion
+      "io.circe" %% "circe-core" % circeVersion
     )
   )
 
