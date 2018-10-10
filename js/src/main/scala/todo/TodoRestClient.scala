@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class TodoRestClient(todosUrl: String) {
-  val headers = Map("Content-Type" -> "application/json; charset=utf-8", "Accept" -> "application/json")
+  val headers = Map("Content-Type" -> "application/json; charset=utf-8", "Accept" -> "application/json", "Accept-Encoding" -> "gzip, deflate")
 
   def listTodos(): Future[List[Todo]] = Ajax.get(url = todosUrl, headers = headers).map { xhr =>
     xhr.responseText.asJson.as[List[Todo]].getOrElse(List.empty[Todo])
