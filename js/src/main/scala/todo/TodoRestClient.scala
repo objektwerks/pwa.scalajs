@@ -1,34 +1,30 @@
 package todo
 
+import io.circe.syntax._
 import org.scalajs.dom.ext.Ajax
 import todo.Todo._
+import todo.implicits.TodoCirceImplicits._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.scalajs.js
-import scala.scalajs.js.JSON
 
 class TodoRestClient(todosUrl: String) {
   val headers = Map("Content-Type" -> "application/json; charset=utf-8", "Accept" -> "application/json")
 
-  def listTodos(): Future[js.Array[Todo]] = Ajax.get(url = todosUrl, headers = headers).map { xhr =>
-    JSON.parse(xhr.responseText).asInstanceOf[js.Array[Todo]]
+  def listTodos(): Future[List[Todo]] = Ajax.get(url = todosUrl, headers = headers).map { xhr =>
+    xhr.responseText.asJson.as[List[Todo]].toOption.get
   }
 
-  def addTodo(todo: Todo): Future[Id] = Ajax.post(url = todosUrl, headers = headers, data = toJson(todo)).map { xhr =>
-    JSON.parse(xhr.responseText).asInstanceOf[Id]
+  def addTodo(todo: Todo): Future[Id] = Ajax.post(url = todosUrl, headers = headers, data = todo.asJson.toString).map { xhr =>
+    xhr.responseText.asJson.as[Id].toOption.getOrElse(Id(0))
   }
 
-  def updateTodo(todo: Todo): Future[Count] = Ajax.put(url = todosUrl, headers = headers, data = toJson(todo)).map { xhr =>
-    JSON.parse(xhr.responseText).asInstanceOf[Count]
+  def updateTodo(todo: Todo): Future[Count] = Ajax.put(url = todosUrl, headers = headers, data = todo.asJson.toString).map { xhr =>
+    xhr.responseText.asJson.as[Count].toOption.getOrElse(Count(0))
   }
 
-  def removeTodo(todo: Todo): Future[Count] = Ajax.delete(url = todosUrl, headers = headers, data = toJson(todo)).map { xhr =>
-    JSON.parse(xhr.responseText).asInstanceOf[Count]
-  }
-
-  def toJson(todo: Todo): String = {
-    JSON.stringify(js.Dynamic.literal("id" -> todo.id, "task" -> todo.task, "opened" -> todo.opened.getTime, "closed" -> todo.closed.getTime))
+  def removeTodo(todo: Todo): Future[Count] = Ajax.delete(url = todosUrl, headers = headers, data = todo.asJson.toString).map { xhr =>
+    xhr.responseText.asJson.as[Count].toOption.getOrElse(Count(0))
   }
 }
 
