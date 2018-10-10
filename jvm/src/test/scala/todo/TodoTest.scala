@@ -16,7 +16,8 @@ import org.http4s.{Method, Request, Uri}
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
 
 class TodoTest extends FunSuite with BeforeAndAfterAll with IOChecker {
-  import Todo._
+  import todo.Todo._
+  import todo.implicits.TodoHttp4sCirceImplicits._
 
   val conf = ConfigFactory.load("test.conf")
   val xa = Transactor.fromDriverManager[IO](conf.getString("test.driver"), conf.getString("test.url"), conf.getString("test.user"), conf.getString("test.password"))

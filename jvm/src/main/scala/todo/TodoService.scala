@@ -7,10 +7,10 @@ import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.impl.Root
 import org.http4s.dsl.io._
+import todo.Todo._
+import todo.implicits.TodoHttp4sCirceImplicits._
 
 class TodoService(repository: TodoRepository) {
-  import Todo._
-
   val instance = HttpService[IO] {
     case GET -> Root / "todos" => Ok(repository.select.asJson)
 

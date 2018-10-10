@@ -1,7 +1,7 @@
 package todo
 
 import org.scalajs.dom.ext.Ajax
-import todo.Todo.{Count, Id}
+import todo.Todo._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
