@@ -10,13 +10,13 @@ import scala.util.{Failure, Success}
 @JSExportTopLevel("TodoClient")
 object TodoClient {
   private val todosUrl = "http://127.0.0.1:7878/api/v1/todos"
-  private val todoRestClient = TodoRestClient(todosUrl)
-  private val todoModelView = TodoModelView(todoRestClient)
 
   @JSExport
   def init(): Unit = {
     version()
     registerServiceWorker()
+    val todoRestClient = TodoRestClient(todosUrl)
+    val todoModelView = TodoModelView(todoRestClient)
     todoModelView.init()
   }
 

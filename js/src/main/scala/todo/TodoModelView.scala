@@ -5,8 +5,11 @@ import java.time.Instant
 import org.scalajs.dom._
 import todo.Todo._
 
+import scala.collection.mutable
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class TodoModelView(todoRestClient: TodoRestClient) {
-  val todos = Map.empty[String, Todo]
+  val todos = mutable.Map.empty[String, Todo]
 
   val todoList = document.getElementById("todo-list")
   val addTodo = document.getElementById("add-todo").asInstanceOf[html.Input]
@@ -21,11 +24,18 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   todoTask.addEventListener("change", event => onChangeTodoTask(event))
 
   def init(): Unit = {
-    assert(todoRestClient.headers.nonEmpty)
+    todoRestClient.listTodos().map { listOfTodos =>
+      println(s"init: array of todos > $listOfTodos")
+      for (todo <- listOfTodos) {
+        todos += todo.id.toString -> todo
+      }
+      setTodoList()
+    }
+    ()
   }
 
   def setTodoList(): Unit = {
-    println("setTodoList: map of todos", todos)
+    println(s"setTodoList: todos > $todos")
     unsetTodoInputs()
     for ((id, todo) <- todos.toSet) {
       val span = document.createElement("span")
@@ -34,6 +44,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
       span.setAttribute("class", "w3-button w3-transparent w3-display-right")
       span.innerHTML = "&times;"
       span.addEventListener("click", event => onClickRemoveTodo(event))
+
       val li = document.createElement("li")
       li.appendChild(document.createTextNode(todo.task))
       li.setAttribute("id", id)
@@ -41,18 +52,20 @@ class TodoModelView(todoRestClient: TodoRestClient) {
       li.appendChild(span)
       todoList.appendChild(li)
     }
+    ()
   }
 
   def setTodoInputs(id: String): Unit = {
     val todo = todos(id)
     todoId.value = todo.id.toString
-    todoOpened.value = timeStampToDateTimeLocal(todo.opened.getTime)
-    todoClosed.value = timeStampToDateTimeLocal(todo.closed.getTime)
+    todoOpened.value = timeStampToDateTimeLocal(todo.opened)
+    todoClosed.value = timeStampToDateTimeLocal(todo.closed)
     todoTask.value = todo.task
     todoClosed.readOnly = false
     todoTask.readOnly = false
     todoClosed.setAttribute("class", "w3-input w3-white w3-hover-light-gray")
     todoTask.setAttribute("class", "w3-input w3-white w3-hover-light-gray")
+    ()
   }
 
   def timeStampToDateTimeLocal(timestamp: Long): String = {
@@ -71,26 +84,32 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     todoTask.readOnly = true
     todoClosed.setAttribute("class", "w3-input w3-light-gray w3-hover-light-gray")
     todoTask.setAttribute("class", "w3-input w3-light-gray w3-hover-light-gray")
+    ()
   }
 
   def onClickTodoList(event: Event): Unit = {
-
+    println(s"onClickTodoList: click > ${event.currentTarget}")
+    ()
   }
 
   def onChangeAddTodo(event: Event): Unit = {
-
+    println(s"onChangeAddTodo: change > ${event.currentTarget}")
+    ()
   }
 
   def onClickRemoveTodo(event: Event): Unit = {
-
+    println(s"onClickRemoveTodo: click > ${event.currentTarget}")
+    ()
   }
 
   def onChangeTodoClosed(event: Event): Unit = {
-
+    println(s"onChangeTodoClosed: change > ${event.currentTarget}")
+    ()
   }
 
   def onChangeTodoTask(event: Event): Unit = {
-
+    println(s"onChangeTodoTask: change > ${event.currentTarget}")
+    ()
   }
 }
 
