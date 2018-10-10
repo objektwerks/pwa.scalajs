@@ -15,16 +15,20 @@ class TodoRestClient(todosUrl: String) {
     JSON.parse(xhr.responseText).asInstanceOf[js.Array[Todo]]
   }
 
-  def addTodo(todo: Todo): Future[Id] = Ajax.post(url = todosUrl, headers = headers, data = todo.toString).map { xhr =>
+  def addTodo(todo: Todo): Future[Id] = Ajax.post(url = todosUrl, headers = headers, data = toJson(todo)).map { xhr =>
     JSON.parse(xhr.responseText).asInstanceOf[Id]
   }
 
-  def updateTodo(todo: Todo): Future[Count] = Ajax.put(url = todosUrl, headers = headers, data = todo.toString).map { xhr =>
+  def updateTodo(todo: Todo): Future[Count] = Ajax.put(url = todosUrl, headers = headers, data = toJson(todo)).map { xhr =>
     JSON.parse(xhr.responseText).asInstanceOf[Count]
   }
 
-  def removeTodo(todo: Todo): Future[Count] = Ajax.delete(url = todosUrl, headers = headers, data = todo.toString).map { xhr =>
+  def removeTodo(todo: Todo): Future[Count] = Ajax.delete(url = todosUrl, headers = headers, data = toJson(todo)).map { xhr =>
     JSON.parse(xhr.responseText).asInstanceOf[Count]
+  }
+
+  def toJson(todo: Todo): String = {
+    JSON.stringify(js.Dynamic.literal("id" -> todo.id, "task" -> todo.task, "opened" -> todo.opened.getTime, "closed" -> todo.closed.getTime))
   }
 }
 
