@@ -5,7 +5,7 @@ name := "pwa.scalajs"
 
 val catsVersion = "1.4.0"
 val doobieVersion = "0.5.3"
-val http4sVersion = "0.18.16"
+val http4sVersion = "0.18.19"
 val circeVersion = "0.9.3"
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
@@ -89,7 +89,10 @@ lazy val js = (project in file("js"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.6"
+      "org.scala-js" %%% "scalajs-dom" % "0.9.6",
+      "io.circe" %%% "circe-core" % circeVersion,
+      "io.circe" %%% "circe-generic" % circeVersion,
+      "io.circe" %%% "circe-parser" % circeVersion
     )
   ) dependsOn sharedJS
 
