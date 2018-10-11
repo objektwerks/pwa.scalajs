@@ -88,27 +88,27 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   }
 
   def onClickTodoList(event: Event): Unit = {
-    println(s"onClickTodoList: click > ${event.currentTarget}")
+    println(s"onClickTodoList: click > ${event.target}")
     ()
   }
 
   def onChangeAddTodo(event: Event): Unit = {
-    println(s"onChangeAddTodo: change > ${event.currentTarget}")
+    println(s"onChangeAddTodo: change > ${event.target}")
     ()
   }
 
   def onClickRemoveTodo(event: Event): Unit = {
-    println(s"onClickRemoveTodo: click > ${event.currentTarget}")
+    println(s"onClickRemoveTodo: click > ${event.target}")
     ()
   }
 
   def onChangeTodoClosed(event: Event): Unit = {
-    println(s"onChangeTodoClosed: change > ${event.currentTarget}")
+    println(s"onChangeTodoClosed: change > ${event.target}")
     ()
   }
 
   def onChangeTodoTask(event: Event): Unit = {
-    println(s"onChangeTodoTask: change > ${event.currentTarget}")
+    println(s"onChangeTodoTask: change > ${event.target}")
     ()
   }
 }
