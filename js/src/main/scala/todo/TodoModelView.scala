@@ -3,6 +3,7 @@ package todo
 import java.time.Instant
 
 import org.scalajs.dom._
+import org.scalajs.dom.raw.{HTMLInputElement, HTMLSelectElement, HTMLSpanElement}
 import todo.Todo._
 
 import scala.collection.mutable
@@ -88,27 +89,32 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   }
 
   def onClickTodoList(event: Event): Unit = {
-    println(s"onClickTodoList: click > ${event.target}")
+    val target = event.target.asInstanceOf[HTMLSelectElement]
+    println(s"onClickTodoList: click > ${target.id} > ${target.value}")
     ()
   }
 
   def onChangeAddTodo(event: Event): Unit = {
-    println(s"onChangeAddTodo: change > ${event.target}")
+    val target = event.target.asInstanceOf[HTMLInputElement]
+    println(s"onChangeAddTodo: change > ${target.id} > ${target.value}")
     ()
   }
 
   def onClickRemoveTodo(event: Event): Unit = {
-    println(s"onClickRemoveTodo: click > ${event.target}")
+    val target = event.target.asInstanceOf[HTMLSpanElement]
+    println(s"onClickRemoveTodo: click > ${target.id}")
     ()
   }
 
   def onChangeTodoClosed(event: Event): Unit = {
-    println(s"onChangeTodoClosed: change > ${event.target}")
+    val target = event.target.asInstanceOf[HTMLInputElement]
+    println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
     ()
   }
 
   def onChangeTodoTask(event: Event): Unit = {
-    println(s"onChangeTodoTask: change > ${event.target}")
+    val target = event.target.asInstanceOf[HTMLInputElement]
+    println(s"onChangeTodoTask: change > ${target.id} > ${target.value}")
     ()
   }
 }
