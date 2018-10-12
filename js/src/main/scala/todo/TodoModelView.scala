@@ -39,7 +39,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def setTodoList(): Unit = {
     println(s"setTodoList: todos > $todos")
     unsetTodoInputs()
-    for ((id, todo) <- todos) {
+    for ((id,todo) <- todos) {
       val span = document.createElement("span")
       span.setAttribute("id", id)
       span.setAttribute("onclick", "parentElement.style.display='none'")
@@ -103,6 +103,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
       val todo = Todo(task = task)
       todoRestClient.addTodo(todo).onComplete {
         case Success(id) =>
+          println(s"onChangeAddTodo: new id > ${id.value}")
           val newTodo = todo.copy(id = id.value)
           todos += (newTodo.id.toString -> newTodo)
           setTodoList()
