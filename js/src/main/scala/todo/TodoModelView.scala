@@ -41,7 +41,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     unsetTodoInputs()
     for ((id,todo) <- todos) {
       val span = document.createElement("span")
-      span.setAttribute("id", id)
+      span.setAttribute("id", id.toString)
       span.setAttribute("onclick", "parentElement.style.display='none'")
       span.setAttribute("class", "w3-button w3-transparent w3-display-right")
       span.innerHTML = "&times;"
@@ -49,7 +49,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
 
       val li = document.createElement("li")
       li.appendChild(document.createTextNode(todo.task))
-      li.setAttribute("id", id)
+      li.setAttribute("id", id.toString)
       li.setAttribute("class", "w3-display-container")
       li.appendChild(span)
       todoList.appendChild(li)
@@ -131,7 +131,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
     val todo = todos(todoId.value)
-    val timestamp = new js.Date(target.value).getTime.toLong
+    val timestamp = new js.Date(todo.closed).getTime.toLong
     val changedTodo = todo.copy(closed = timestamp)
     onChangeUpdateTodo(changedTodo)
   }
