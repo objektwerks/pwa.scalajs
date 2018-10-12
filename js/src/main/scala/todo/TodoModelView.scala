@@ -97,14 +97,14 @@ class TodoModelView(todoRestClient: TodoRestClient) {
 
   def onChangeAddTodo(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
-    println(s"onChangeAddTodo: change > ${target.id} > ${target.value}")
+    println(s"onChangeAddTodo: change > ${target.value}")
     val task = addTodo.value
     if (task != null && task.nonEmpty) {
-      var todo = Todo(task = task)
+      val todo = Todo(task = task)
       todoRestClient.addTodo(todo).onComplete {
         case Success(id) =>
-          todo = todo.copy(id = id.value)
-          todos += (id.toString -> todo)
+          val newTodo = todo.copy(id = id.value)
+          todos += (newTodo.id.toString -> newTodo)
           setTodoList()
         case Failure(error) => println(s"onChangeAddTodo: error > ${error.getMessage}")
       }
@@ -129,18 +129,18 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def onChangeTodoClosed(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
-    var todo = todos(todoId.value)
+    val todo = todos(todoId.value)
     val timestamp = new js.Date(target.value).getTime.toLong
-    todo = todo.copy(closed = timestamp)
-    onChangeUpdateTodo(todo)
+    val changedTodo = todo.copy(closed = timestamp)
+    onChangeUpdateTodo(changedTodo)
   }
 
   def onChangeTodoTask(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoTask: change > ${target.id} > ${target.value}")
-    var todo = todos(todoId.value)
-    todo = todo.copy(task = target.value)
-    onChangeUpdateTodo(todo)
+    val todo = todos(todoId.value)
+    val changedTodo = todo.copy(task = target.value)
+    onChangeUpdateTodo(changedTodo)
   }
 
   def onChangeUpdateTodo(todo: Todo): Unit = {

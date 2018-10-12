@@ -11,18 +11,22 @@ class TodoRestClient(todosUrl: String) {
   val headers = Map("Content-Type" -> "application/json; charset=utf-8", "Accept" -> "application/json")
 
   def listTodos(): Future[List[Todo]] = Ajax.get(url = todosUrl, headers = headers).map { xhr =>
+    println(s"listTodos: ${xhr.responseText.asJson.as[List[Todo]]}")
     xhr.responseText.asJson.as[List[Todo]].getOrElse(List.empty[Todo])
   }
 
   def addTodo(todo: Todo): Future[Id] = Ajax.post(url = todosUrl, headers = headers, data = todo.asJson.noSpaces).map { xhr =>
+    println(s"addTodo: ${xhr.responseText.asJson.as[Id]}")
     xhr.responseText.asJson.as[Id].getOrElse(Id(0))
   }
 
   def updateTodo(todo: Todo): Future[Count] = Ajax.put(url = todosUrl, headers = headers, data = todo.asJson.noSpaces).map { xhr =>
+    println(s"updateTodo: ${xhr.responseText.asJson.as[Count]}")
     xhr.responseText.asJson.as[Count].getOrElse(Count(0))
   }
 
   def removeTodo(todo: Todo): Future[Count] = Ajax.delete(url = todosUrl, headers = headers, data = todo.asJson.noSpaces).map { xhr =>
+    println(s"rmoveTodo: ${xhr.responseText.asJson.as[Count]}")
     xhr.responseText.asJson.as[Count].getOrElse(Count(0))
   }
 }
