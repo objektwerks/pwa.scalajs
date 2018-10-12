@@ -8,5 +8,5 @@ Test
 
 Run
 ---
-1. sbt run
+1. sbt jvm/run
 2. open browser to http://127.0.0.1:7878
