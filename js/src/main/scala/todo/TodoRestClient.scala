@@ -2,7 +2,6 @@ package todo
 
 import io.circe.syntax._
 import org.scalajs.dom.ext.Ajax
-import todo.Todo._
 import todo.implicits.TodoCirceImplicits._
 
 import scala.concurrent.ExecutionContext.Implicits.global

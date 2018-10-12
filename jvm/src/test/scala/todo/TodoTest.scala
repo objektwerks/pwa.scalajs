@@ -17,7 +17,6 @@ import org.http4s.{Method, Request, Uri}
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
 
 class TodoTest extends FunSuite with BeforeAndAfterAll with IOChecker {
-  import todo.Todo._
   import todo.implicits.TodoHttp4sCirceImplicits._
 
   val conf = ConfigFactory.load("test.conf")
@@ -53,7 +52,7 @@ class TodoTest extends FunSuite with BeforeAndAfterAll with IOChecker {
     val id = post(todo)
     println(id)
     println(id.asJson)
-    assert(id.id == 1)
+    assert(id.value == 1)
   }
 
   test("get") {
@@ -65,7 +64,7 @@ class TodoTest extends FunSuite with BeforeAndAfterAll with IOChecker {
     val todo = get.head
     assert(todo.id == 1)
     val completedTodo = todo.copy(closed = Timestamp.from(Instant.now).getTime)
-    assert(put(completedTodo).count == 1)
+    assert(put(completedTodo).value == 1)
   }
 
   test("delete") {
@@ -80,9 +79,9 @@ class TodoTest extends FunSuite with BeforeAndAfterAll with IOChecker {
     val count = delete(todo.id)
     println(count)
     println(count.asJson)
-    assert(count.count == 1)
+    assert(count.value == 1)
     assert(get.isEmpty)
-    assert(post(Todo(task = "drink beer")).id == 2)
+    assert(post(Todo(task = "drink beer")).value == 2)
   }
 
   def post(todo: Todo): Id = {

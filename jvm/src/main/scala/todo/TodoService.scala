@@ -6,7 +6,6 @@ import io.circe.syntax._
 import org.http4s._
 import org.http4s.dsl.impl.Root
 import org.http4s.dsl.io._
-import todo.Todo._
 import todo.implicits.TodoHttp4sCirceImplicits._
 
 class TodoService(repository: TodoRepository) {

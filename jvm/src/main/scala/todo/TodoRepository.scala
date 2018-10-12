@@ -3,7 +3,6 @@ package todo
 import cats.effect._
 import doobie._
 import doobie.implicits._
-import todo.Todo._
 
 import scala.io.Source
 import scala.util.Try

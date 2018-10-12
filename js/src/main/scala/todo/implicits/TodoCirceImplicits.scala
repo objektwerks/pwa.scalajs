@@ -2,7 +2,7 @@ package todo.implicits
 
 import io.circe.generic.semiauto._
 import io.circe.{Decoder, Encoder}
-import todo.Todo._
+import todo.{Count, Id, Todo}
 
 object TodoCirceImplicits {
   implicit val todoDecoder: Decoder[Todo] = deriveDecoder[Todo]

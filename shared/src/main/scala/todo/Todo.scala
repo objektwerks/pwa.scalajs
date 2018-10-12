@@ -1,15 +1,12 @@
 package todo
 
-import java.sql.Timestamp
-import java.time.Instant
+import java.util.Date
 
-object Todo {
-  case class Todo(id: Int = 0,
-                  task: String,
-                  opened: Long = Timestamp.from(Instant.now).getTime,
-                  closed: Long = Timestamp.from(Instant.now).getTime)
+case class Todo(id: Int = 0,
+                task: String,
+                opened: Long = new Date().getTime,
+                closed: Long = new Date().getTime)
 
-  case class Id(id: Int)
+case class Id(value: Int)
 
-  case class Count(count: Int)
-}
+case class Count(value: Int)
