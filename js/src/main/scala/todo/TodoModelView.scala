@@ -1,5 +1,7 @@
 package todo
 
+import java.time.Instant
+
 import org.scalajs.dom._
 import org.scalajs.dom.raw.{HTMLInputElement, HTMLSelectElement, HTMLSpanElement}
 
@@ -67,7 +69,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   }
 
   def timeStampToDateTimeLocal(timestamp: Long): String = {
-    val iso = new js.Date(timestamp.toDouble).toISOString()
+    val iso = Instant.ofEpochMilli(timestamp).toString
     iso.substring(0, iso.lastIndexOf(":"))
   }
 
