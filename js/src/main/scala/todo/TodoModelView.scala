@@ -103,9 +103,9 @@ class TodoModelView(todoRestClient: TodoRestClient) {
       val todo = Todo(task = task)
       todoRestClient.addTodo(todo).onComplete {
         case Success(id) =>
-          println(s"onChangeAddTodo: new id > ${id.value}")
           val newTodo = todo.copy(id = id.value)
-          todos += (newTodo.id.toString -> newTodo)
+          todos += (id.toString -> newTodo)
+          println(s"onChangeAddTodo: new todo > $newTodo")
           setTodoList()
         case Failure(error) => println(s"onChangeAddTodo: error > ${error.getMessage}")
       }
