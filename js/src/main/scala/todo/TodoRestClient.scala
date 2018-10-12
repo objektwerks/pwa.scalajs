@@ -12,21 +12,18 @@ class TodoRestClient(todosUrl: String) {
 
   def listTodos(): Future[List[Todo]] = {
     Ajax.get(url = todosUrl, headers = headers).map { xhr =>
-      println(s"listTodos: ${xhr.responseText.asInstanceOf[List[Todo]]}")
       xhr.responseText.asInstanceOf[List[Todo]]
     }
   }
 
   def addTodo(todo: Todo): Future[Id] = {
     Ajax.post(url = todosUrl, headers = headers, data = todo.asJson.noSpaces).map { xhr =>
-      println(s"addTodo: ${xhr.responseText.asInstanceOf[Id]}")
       xhr.responseText.asInstanceOf[Id]
     }
   }
 
   def updateTodo(todo: Todo): Future[Count] = {
     Ajax.put(url = todosUrl, headers = headers, data = todo.asJson.noSpaces).map { xhr =>
-      println(s"updateTodo: ${xhr.responseText.asInstanceOf[Count]}")
       xhr.responseText.asInstanceOf[Count]
     }
   }
@@ -34,7 +31,6 @@ class TodoRestClient(todosUrl: String) {
   def removeTodo(todoId: Int): Future[Count] = {
     val uri = todosUrl + "/" + todoId
     Ajax.delete(url = uri, headers = headers).map { xhr =>
-      println(s"rmoveTodo: ${xhr.responseText.asJson.as[Count]}")
       xhr.responseText.asInstanceOf[Count]
     }
   }
