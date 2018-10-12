@@ -115,7 +115,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     val target = event.target.asInstanceOf[HTMLSpanElement]
     println(s"onClickRemoveTodo: click > ${target.id}")
     val todo = todos(target.id)
-    todoRestClient.removeTodo(todo).onComplete {
+    todoRestClient.removeTodo(todo.id).onComplete {
       case Success(count) =>
         if (count.value == 1) {
           todos -= target.id
