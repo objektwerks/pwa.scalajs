@@ -8,6 +8,9 @@ object TodoCirceImplicits {
   implicit val todoDecoder: Decoder[Todo] = deriveDecoder[Todo]
   implicit val todoEncoder: Encoder[Todo] = deriveEncoder[Todo]
 
+  implicit val todosDecoder: Decoder[List[Todo]] = deriveDecoder[List[Todo]]
+  implicit val todosEncoder: Encoder[List[Todo]] = deriveEncoder[List[Todo]]
+
   implicit val idDecoder: Decoder[Id] = deriveDecoder[Id]
   implicit val idEncoder: Encoder[Id] = deriveEncoder[Id]
 

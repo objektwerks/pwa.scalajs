@@ -27,10 +27,12 @@ class TodoModelView(todoRestClient: TodoRestClient) {
 
   def init(): Unit = {
     todoRestClient.listTodos().map { listOfTodos =>
-      println(s"init: list of todos > $listOfTodos")
+      println(s"init: list of todos > ${listOfTodos.toString}")
       for (todo <- listOfTodos) {
+        println(s"init: todo > ${todo.toString}")
         todos += (todo.id.toString -> todo)
       }
+      println(s"init: map of todos > ${todos.toString}")
       setTodoList()
     }
     ()
