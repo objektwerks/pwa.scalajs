@@ -1,14 +1,11 @@
 package todo
 
-import java.time.Instant
-
 import org.scalajs.dom._
 import org.scalajs.dom.raw.{HTMLInputElement, HTMLSelectElement, HTMLSpanElement}
 
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
-import scala.util.{Failure, Success}
 
 class TodoModelView(todoRestClient: TodoRestClient) {
   val todos = mutable.SortedMap.empty[Int, Todo]
@@ -60,7 +57,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   }
 
   def timeStampToDateTimeLocal(timestamp: Long): String = {
-    val iso = Instant.ofEpochMilli(timestamp).toString
+    val iso = new js.Date(timestamp.toDouble).toISOString()
     iso.substring(0, iso.lastIndexOf(":"))
   }
 
@@ -103,38 +100,43 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     val task = addTodo.value
     if (task != null && task.nonEmpty) {
       val todo = Todo(task = task)
-      todoRestClient.addTodo(todo).onComplete {
-        case Success(id) =>
-          val newTodo = todo.copy(id = id.value)
+      todoRestClient.addTodo(todo).map { id =>
+        if (id.value > 0) {
+          val timestamp = new js.Date().getTime.toLong
+          val newTodo = todo.copy(id = id.value, opened = timestamp, closed = timestamp)
           todos += (id.value -> newTodo)
           println(s"onChangeAddTodo: new todo > $newTodo")
           setTodoList()
-        case Failure(error) => println(s"onChangeAddTodo: error > ${error.getMessage}")
+        } else {
+          println(s"onChangeAddTodo: failed > $task")
+        }
       }
     }
+    ()
   }
 
   def onClickRemoveTodo(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLSpanElement]
     println(s"onClickRemoveTodo: click > ${target.id}")
     val todo = todos(target.id.toInt)
-    todoRestClient.removeTodo(todo.id).onComplete {
-      case Success(count) =>
-        if (count.value == 1) {
-          todos -= target.id.toInt
-          setTodoList()
-          println(s"onClickRemoveTodo: removed > $todo")
-        }
-      case Failure(error) => println(s"onClickRemoveTodo: error > ${error.getMessage}")
+    todoRestClient.removeTodo(todo.id).map { count =>
+      if (count.value == 1) {
+        todos -= target.id.toInt
+        setTodoList()
+        println(s"onClickRemoveTodo: removed > $todo")
+      } else {
+        println(s"onClickRemoveTodo: failed > $todo")
+      }
     }
+    ()
   }
 
   def onChangeTodoClosed(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
     val todo = todos(todoId.value.toInt)
-    val timestamp = new js.Date(todo.closed.toDouble)
-    val changedTodo = todo.copy(closed = timestamp.getTime.toLong)
+    val timestamp = new js.Date(todo.closed.toDouble).getTime.toLong
+    val changedTodo = todo.copy(closed = timestamp)
     onChangeUpdateTodo(changedTodo)
   }
 
@@ -147,15 +149,14 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   }
 
   def onChangeUpdateTodo(todo: Todo): Unit = {
-    todoRestClient.updateTodo(todo).onComplete {
-      case Success(count) =>
-        if (count.value > 0) {
-          println(s"onChangeUpdateTodo: updated > $todo")
-        } else {
-          println(s"onChangeUpdateTodo: update failed > $todo")
-        }
-      case Failure(error) => println(s"onChangeUpdateTodo: error > ${error.getMessage}")
+    todoRestClient.updateTodo(todo).map { count =>
+      if (count.value > 0) {
+        println(s"onChangeUpdateTodo: updated > $todo")
+      } else {
+        println(s"onChangeUpdateTodo: update failed > $todo")
+      }
     }
+    ()
   }
 }
 
