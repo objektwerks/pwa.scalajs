@@ -93,7 +93,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
 
   def onClickTodoList(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLSelectElement]
-    println(s"onClickTodoList: click > ${target.id} > ${target.value}")
+    println(s"onClickTodoList: click > ${target.id}")
     setTodoInputs(target.id)
   }
 
