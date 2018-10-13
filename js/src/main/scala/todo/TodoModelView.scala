@@ -11,7 +11,7 @@ import scala.scalajs.js
 import scala.util.{Failure, Success}
 
 class TodoModelView(todoRestClient: TodoRestClient) {
-  val todos = mutable.Map.empty[String, Todo]
+  val todos = mutable.SortedMap.empty[Int, Todo]
 
   val todoList = document.getElementById("todo-list")
   val addTodo = document.getElementById("add-todo").asInstanceOf[html.Input]
@@ -30,7 +30,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
       println(s"init: list of todos > ${listOfTodos.toString}")
       for (todo <- listOfTodos) {
         println(s"init: todo > ${todo.toString}")
-        todos += (todo.id.toString -> todo)
+        todos += (todo.id -> todo)
       }
       println(s"init: map of todos > ${todos.toString}")
       setTodoList()
@@ -59,7 +59,12 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     ()
   }
 
-  def setTodoInputs(id: String): Unit = {
+  def timeStampToDateTimeLocal(timestamp: Long): String = {
+    val iso = Instant.ofEpochMilli(timestamp).toString
+    iso.substring(0, iso.lastIndexOf(":"))
+  }
+
+  def setTodoInputs(id: Int): Unit = {
     val todo = todos(id)
     todoId.value = todo.id.toString
     todoOpened.value = timeStampToDateTimeLocal(todo.opened)
@@ -70,11 +75,6 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     todoClosed.setAttribute("class", "w3-input w3-white w3-hover-light-gray")
     todoTask.setAttribute("class", "w3-input w3-white w3-hover-light-gray")
     ()
-  }
-
-  def timeStampToDateTimeLocal(timestamp: Long): String = {
-    val iso = Instant.ofEpochMilli(timestamp).toString
-    iso.substring(0, iso.lastIndexOf(":"))
   }
 
   def unsetTodoInputs(): Unit = {
@@ -94,7 +94,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def onClickTodoList(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLSelectElement]
     println(s"onClickTodoList: click > ${target.id}")
-    setTodoInputs(target.id)
+    setTodoInputs(target.id.toInt)
   }
 
   def onChangeAddTodo(event: Event): Unit = {
@@ -106,7 +106,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
       todoRestClient.addTodo(todo).onComplete {
         case Success(id) =>
           val newTodo = todo.copy(id = id.value)
-          todos += (id.value.toString -> newTodo)
+          todos += (id.value -> newTodo)
           println(s"onChangeAddTodo: new todo > $newTodo")
           setTodoList()
         case Failure(error) => println(s"onChangeAddTodo: error > ${error.getMessage}")
@@ -117,11 +117,11 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def onClickRemoveTodo(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLSpanElement]
     println(s"onClickRemoveTodo: click > ${target.id}")
-    val todo = todos(target.id)
+    val todo = todos(target.id.toInt)
     todoRestClient.removeTodo(todo.id).onComplete {
       case Success(count) =>
         if (count.value == 1) {
-          todos -= target.id
+          todos -= target.id.toInt
           setTodoList()
           println(s"onClickRemoveTodo: removed > $todo")
         }
@@ -132,7 +132,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def onChangeTodoClosed(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
-    val todo = todos(todoId.value)
+    val todo = todos(todoId.value.toInt)
     val timestamp = new js.Date(todo.closed.toDouble)
     val changedTodo = todo.copy(closed = timestamp.getTime.toLong)
     onChangeUpdateTodo(changedTodo)
@@ -141,7 +141,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def onChangeTodoTask(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoTask: change > ${target.id} > ${target.value}")
-    val todo = todos(todoId.value)
+    val todo = todos(todoId.value.toInt)
     val changedTodo = todo.copy(task = target.value)
     onChangeUpdateTodo(changedTodo)
   }

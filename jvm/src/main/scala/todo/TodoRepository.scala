@@ -29,7 +29,7 @@ class TodoRepository(xa: Transactor[IO], schema: String) {
 }
 
 object TodoRepository {
-  val selectTodos = sql"select * from todo order by opened desc".query[Todo]
+  val selectTodos = sql"select * from todo order by id asc".query[Todo]
   val insertTodo = Update[(String, Long, Long)]("insert into todo(task, opened, closed) values (?, ?, ?)")
   val updateTodo = Update[(String, Long, Int)]("update todo set task = ?, closed = ? where id = ?")
   val deleteTodo = Update[Int]("delete from todo where id = ?")
