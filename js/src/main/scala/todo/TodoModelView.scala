@@ -134,23 +134,26 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def onChangeTodoClosed(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
-    val todo = todos(todoId.value.toInt)
+    var todo = todos(todoId.value.toInt)
     val timestamp = new js.Date(todo.closed.toDouble).getTime.toLong
-    val changedTodo = todo.copy(closed = timestamp)
-    onChangeUpdateTodo(changedTodo)
+    todo = todo.copy(closed = timestamp)
+    onChangeUpdateTodo(todo)
   }
 
   def onChangeTodoTask(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoTask: change > ${target.id} > ${target.value}")
-    val todo = todos(todoId.value.toInt)
-    val changedTodo = todo.copy(task = target.value)
-    onChangeUpdateTodo(changedTodo)
+    var todo = todos(todoId.value.toInt)
+    todo = todo.copy(task = target.value)
+    onChangeUpdateTodo(todo)
   }
 
   def onChangeUpdateTodo(todo: Todo): Unit = {
     todoRestClient.updateTodo(todo).map { count =>
       if (count.value > 0) {
+        todos(todo.id) = todo
+        setTodoList()
+        setTodoInputs(todo.id)
         println(s"onChangeUpdateTodo: updated > $todo")
       } else {
         println(s"onChangeUpdateTodo: update failed > $todo")
