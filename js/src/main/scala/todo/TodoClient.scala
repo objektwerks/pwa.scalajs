@@ -27,14 +27,14 @@ object TodoClient {
         case Success(registration) =>
           println("registerServiceWorker: registered service worker")
           registration.update()
-        case Failure(error) => println(s"registerServiceWorker: error > $error")
+        case Failure(error) => println(s"registerServiceWorker: service worker registration failed > ${error.printStackTrace()}")
       }
   }
 
   def version(): Unit = {
     val div = document.getElementById("version")
     val p = document.createElement("p")
-    val text = document.createTextNode("V1")
+    val text = document.createTextNode("V3")
     val node = p.appendChild(text)
     div.appendChild(node)
     ()
