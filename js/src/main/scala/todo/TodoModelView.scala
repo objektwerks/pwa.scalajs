@@ -134,7 +134,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
     var todo = todos(todoId.value.toInt)
-    val timestamp = new js.Date(target.value.toLong).getTime.toLong
+    val timestamp = new js.Date(target.value.toDouble).getTime.toLong
     todo = todo.copy(closed = timestamp)
     onChangeUpdateTodo(todo)
   }
