@@ -24,8 +24,10 @@ object TodoClient {
       .register("/sw-opt.js")
       .toFuture
       .onComplete {
-        case Success(registration) => registration.update()
-        case Failure(exception) => println(exception)
+        case Success(registration) =>
+          println("registerServiceWorker: registered service worker")
+          registration.update()
+        case Failure(error) => println(s"registerServiceWorker: error > $error")
       }
   }
 

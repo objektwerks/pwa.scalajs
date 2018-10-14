@@ -1,9 +1,9 @@
 package todo
 
+import org.scalajs.dom.experimental.Fetch._
 import org.scalajs.dom.experimental.serviceworkers.ServiceWorkerGlobalScope._
 import org.scalajs.dom.experimental.serviceworkers.{ExtendableEvent, FetchEvent}
-import org.scalajs.dom.experimental.{Request, RequestInfo, Response}
-import org.scalajs.dom.experimental.Fetch._
+import org.scalajs.dom.experimental._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -29,16 +29,53 @@ object ServiceWorker {
     "logo-384.png",
     "logo-512.png",
     "js-opt.js",
-    "sharedjs-opt.js",
-    "sw-opt.js"
+    "sharedjs-opt.js"
   ).toJSArray
+
+  def main(args: Array[String]): Unit = {
+    self.addEventListener("install", (event: ExtendableEvent) => {
+      println(s"install: service worker installed > ${event.toString}")
+      event.waitUntil(toCache().toJSPromise)
+    })
+
+    self.addEventListener("activate", (event: ExtendableEvent) => {
+      println(s"activate: service worker activated > ${event.toString}")
+      invalidateCache()
+      self.clients.claim()
+    })
+
+    self.addEventListener("fetch", (event: FetchEvent) => {
+      if (event.request.cache == RequestCache.`only-if-cached`
+        && event.request.mode != RequestMode.`same-origin`) {
+        println(s"fetch: Bug [823392] cache === only-if-cached && mode !== same-orgin' > ${event.request.url}")
+      } else {
+        fromCache(event.request).onComplete {
+          case Success(response) =>
+            println(s"fetch: in cache > ${event.request.url}")
+            response
+          case Failure(error) =>
+            println(s"fetch: not in cache, calling server... > ${event.request.url} > ${error.printStackTrace()}")
+            fetch(event.request)
+              .toFuture
+              .onComplete {
+                case Success(response) => response
+                case Failure(finalError) => println(s"fetch: final fetch failed > ${finalError.printStackTrace()}")
+              }
+        }
+      }
+    })
+
+    println("main: ServiceWorker installing...")
+  }
 
   def toCache(): Future[Unit] = {
     self.caches.open(todoCache)
       .toFuture
       .onComplete {
-        case Success(cache) => println("toCache: caching assets..."); cache.addAll(todoAssets)
-        case Failure(exception) => println(s"toCache: failed > $exception")
+        case Success(cache) =>
+          println("toCache: caching assets...")
+          cache.addAll(todoAssets)
+        case Failure(error) => println(s"toCache: failed > ${error.printStackTrace()}")
       }
     Future.successful(())
   }
@@ -48,8 +85,8 @@ object ServiceWorker {
       .toFuture
       .asInstanceOf[Future[Response]]
       .map { response: Response =>
-          println(s"fromCache: matched request > ${request.url}")
-          response
+        println(s"fromCache: matched request > ${request.url}")
+        response
       }
   }
 
@@ -57,31 +94,11 @@ object ServiceWorker {
     self.caches.delete(todoCache)
       .toFuture
       .map { invalidatedCache =>
-        println(s"invalidateCache: cache invalidated?', $invalidatedCache")
-        if (invalidatedCache) toCache()
+        if (invalidatedCache) {
+          println(s"invalidateCache: cache invalidated!', $invalidatedCache")
+          toCache()
+        }
       }
     ()
   }
-
-  self.addEventListener("install", (event: ExtendableEvent) => {
-    println(s"install: service worker installed > $event")
-    event.waitUntil(toCache().toJSPromise)
-  })
-
-  self.addEventListener("activate", (event: ExtendableEvent) => {
-    println(s"activate: service worker activated > $event")
-    invalidateCache()
-    self.clients.claim()
-  })
-
-  self.addEventListener("fetch", (event: FetchEvent) => {
-    fromCache(event.request).onComplete {
-      case Success(response) =>
-        println(s"fetch: in cache > ${event.request.url}")
-        event.respondWith(response)
-      case Failure(_) =>
-        println(s"fetch: not in cache, calling server... > ${event.request.url}")
-        fetch(event.request).toFuture.map(response => event.respondWith(response))
-    }
-  })
 }

@@ -26,7 +26,6 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     todoRestClient.listTodos().map { listOfTodos =>
       println(s"init: list of todos > ${listOfTodos.toString}")
       for (todo <- listOfTodos) {
-        println(s"init: todo > ${todo.toString}")
         todos += (todo.id -> todo)
       }
       println(s"init: map of todos > ${todos.toString}")
