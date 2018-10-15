@@ -108,6 +108,7 @@ lazy val sw = (project in file("sw"))
 lazy val jvm = (project in file("jvm"))
   .settings(commonSettings)
   .settings(
+    mainClass in reStart := Some("todo.TodoApp"),
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core" % catsVersion,
       "org.typelevel" %% "cats-effect" % "0.10.1",

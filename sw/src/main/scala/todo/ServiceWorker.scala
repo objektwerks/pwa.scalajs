@@ -74,10 +74,11 @@ object ServiceWorker {
       .onComplete {
         case Success(cache) =>
           println("toCache: caching assets...")
-          cache.addAll(todoAssets)
-        case Failure(error) => println(s"toCache: failed > ${error.printStackTrace()}")
+          cache.addAll(todoAssets).toFuture
+        case Failure(error) =>
+          println(s"toCache: failed > ${error.printStackTrace()}")
       }
-    Future.successful(())
+    Future.unit
   }
 
   def fromCache(request: Request): Future[Response] = {
