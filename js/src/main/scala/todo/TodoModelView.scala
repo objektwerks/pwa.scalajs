@@ -96,7 +96,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
   def onChangeAddTodo(event: Event): Unit = {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeAddTodo: change > ${target.value}")
-    val task = addTodo.value
+    val task = target.value
     if (task != null && task.nonEmpty) {
       val todo = Todo(task = task)
       todoRestClient.addTodo(todo).map { id =>
@@ -143,7 +143,8 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoTask: change > ${target.id} > ${target.value}")
     var todo = todos(todoId.value.toInt)
-    if (target.value != null && target.value.nonEmpty) {
+    val task = target.value
+    if (task != null && task.nonEmpty) {
       todo = todo.copy(task = target.value)
       onChangeUpdateTodo(todo)
     } else {
