@@ -55,16 +55,19 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     ()
   }
 
-  def timeStampToDateTimeLocal(timestamp: Long): String = {
+  def timestampToDate(timestamp: Long): String = {
     val iso = new js.Date(timestamp.toDouble).toISOString()
-    iso.substring(0, iso.lastIndexOf(":"))
+    val isoDateTime = iso.substring(0, iso.lastIndexOf(":"))
+    println(s"iso: $iso")
+    println(s"iso datetime: $isoDateTime")
+    isoDateTime
   }
 
   def setTodoInputs(id: Int): Unit = {
     val todo = todos(id)
     todoId.value = todo.id.toString
-    todoOpened.value = timeStampToDateTimeLocal(todo.opened)
-    todoClosed.value = timeStampToDateTimeLocal(todo.closed)
+    todoOpened.value = timestampToDate(todo.opened)
+    todoClosed.value = timestampToDate(todo.closed)
     todoTask.value = todo.task
     todoClosed.readOnly = false
     todoTask.readOnly = false
@@ -134,7 +137,7 @@ class TodoModelView(todoRestClient: TodoRestClient) {
     val target = event.target.asInstanceOf[HTMLInputElement]
     println(s"onChangeTodoClosed: change > ${target.id} > ${target.value}")
     var todo = todos(todoId.value.toInt)
-    val timestamp = new js.Date(target.value.toDouble).getTime.toLong
+    val timestamp = new js.Date(target.value).getTime.toLong
     todo = todo.copy(closed = timestamp)
     onChangeUpdateTodo(todo)
   }
