@@ -5,8 +5,8 @@ name := "pwa.scalajs"
 
 val catsVersion = "1.4.0"
 val doobieVersion = "0.5.3"
-val http4sVersion = "0.18.19"
-val circeVersion = "0.9.3"
+val http4sVersion = "0.18.20"
+val circeVersion = "0.10.0"
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "objektwerks",
