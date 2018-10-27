@@ -121,7 +121,7 @@ lazy val jvm = (project in file("jvm"))
       "org.http4s" %% "http4s-circe" % http4sVersion,
       "org.http4s" %% "http4s-dsl" % http4sVersion,
       "org.http4s" %% "http4s-server" % http4sVersion,
-      "co.fs2" %% "fs2-core" % "0.10.5",
+      "co.fs2" %% "fs2-core" % "0.10.6",
       "io.circe" %% "circe-core" % circeVersion,
       "io.circe" %% "circe-generic" % circeVersion,
       "com.github.pureconfig" %% "pureconfig" % "0.9.2",
