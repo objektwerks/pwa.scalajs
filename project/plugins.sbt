@@ -1,3 +1,5 @@
 addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0")
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.25")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.26")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
+addSbtPlugin("org.lyranthe.sbt" % "partial-unification" % "1.1.2")
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.4")
