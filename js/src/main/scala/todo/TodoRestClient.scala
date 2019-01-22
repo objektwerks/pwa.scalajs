@@ -19,7 +19,7 @@ class TodoRestClient(todosUrl: String) {
           println(s"listTodos: error > ${error.printStackTrace()}")
           List.empty[Todo]
       }
-    }
+    }.recover { case error => println(s"listTodos: error > ${error.printStackTrace()}"); List.empty[Todo] }
   }
 
   def addTodo(todo: Todo): Future[Id] = {
@@ -30,7 +30,7 @@ class TodoRestClient(todosUrl: String) {
           println(s"addTodo: error > ${error.printStackTrace()}")
           Id(0)
       }
-    }
+    }.recover { case error => println(s"addTodo: error > ${error.printStackTrace()}"); Id(0) }
   }
 
   def updateTodo(todo: Todo): Future[Count] = {
@@ -41,7 +41,7 @@ class TodoRestClient(todosUrl: String) {
           println(s"updateTodo: error > ${error.printStackTrace()}")
           Count(0)
       }
-    }
+    }.recover { case error => println(s"updateTodo: error > ${error.printStackTrace()}"); Count(0) }
   }
 
   def removeTodo(todoId: Int): Future[Count] = {
@@ -53,7 +53,7 @@ class TodoRestClient(todosUrl: String) {
           println(s"removeTodo: error > ${error.printStackTrace()}")
           Count(0)
       }
-    }
+    }.recover { case error => println(s"removeTodo: error > ${error.printStackTrace()}"); Count(0) }
   }
 }
 
