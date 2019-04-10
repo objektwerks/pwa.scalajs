@@ -80,8 +80,8 @@ lazy val jvm = (project in file("jvm"))
       "com.github.pureconfig" %% "pureconfig" % "0.9.2",
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
-      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",
-      "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
+      "org.scalatest" %% "scalatest" % "3.0.5" % Test
     ),
     (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data,
     (resources in Compile) += (fullOptJS in (js, Compile)).value.data,
