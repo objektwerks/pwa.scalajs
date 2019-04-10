@@ -3,7 +3,7 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 
 name := "pwa.scalajs"
 
-val catsVersion = "1.5.0"
+val catsVersion = "1.6.0"
 val doobieVersion = "0.5.3"
 val http4sVersion = "0.18.20"
 val circeVersion = "0.11.1"
