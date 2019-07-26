@@ -3,9 +3,9 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 
 name := "pwa.scalajs"
 
-val catsVersion = "1.6.0"
-val doobieVersion = "0.5.3"
-val http4sVersion = "0.18.20"
+val catsVersion = "1.6.1"
+val doobieVersion = "0.5.4"
+val http4sVersion = "0.18.24"
 val circeVersion = "0.11.1"
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
@@ -81,7 +81,7 @@ lazy val jvm = (project in file("jvm"))
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
-      "org.scalatest" %% "scalatest" % "3.0.5" % Test
+      "org.scalatest" %% "scalatest" % "3.0.8" % Test
     ),
     (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data,
     (resources in Compile) += (fullOptJS in (js, Compile)).value.data,
