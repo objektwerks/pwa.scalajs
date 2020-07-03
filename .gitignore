@@ -1,7 +1,10 @@
+.bloop
+.metals
+.idea
 target/
+project/metals.sbt
 project/project/
 project/target/
-.idea
 .DS_Store
 node_modules
 package-lock.json
