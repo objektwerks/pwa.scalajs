@@ -11,7 +11,7 @@ val circeVersion = "0.11.1"
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "objektwerks",
   version := "0.1-SNAPSHOT",
-  scalaVersion := "2.12.10"
+  scalaVersion := "2.12.12"
 )
 
 lazy val root = project.in(file("."))
@@ -81,7 +81,7 @@ lazy val jvm = (project in file("jvm"))
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
-      "org.scalatest" %% "scalatest" % "3.0.8" % Test
+      "org.scalatest" %% "scalatest" % "3.0.9" % Test
     ),
     (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data,
     (resources in Compile) += (fullOptJS in (js, Compile)).value.data,
