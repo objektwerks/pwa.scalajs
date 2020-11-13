@@ -5,22 +5,31 @@ import java.time.Instant
 
 import cats.effect.IO
 import com.typesafe.config.ConfigFactory
+
 import doobie.scalatest._
 import doobie.util.transactor.Transactor
+
 import io.circe.generic.auto._
 import io.circe.syntax._
+
 import org.http4s.circe._
 import org.http4s.client.blaze.Http1Client
 import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.middleware.GZip
 import org.http4s.{Method, Request, Uri}
-import org.scalatest.{BeforeAndAfterAll, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funsuite.AnyFunSuite
 
-class TodoTest extends FunSuite with BeforeAndAfterAll with IOChecker {
+class TodoTest extends AnyFunSuite with BeforeAndAfterAll with IOChecker {
   import todo.implicits.TodoHttp4sCirceImplicits._
 
   val conf = ConfigFactory.load("test.conf")
-  val xa = Transactor.fromDriverManager[IO](conf.getString("test.driver"), conf.getString("test.url"), conf.getString("test.user"), conf.getString("test.password"))
+  val xa = Transactor.fromDriverManager[IO](
+    conf.getString("test.driver"),
+    conf.getString("test.url"),
+    conf.getString("test.user"),
+    conf.getString("test.password")
+  )
   val repository = TodoRepository(xa, conf.getString("test.schema"))
   val service = TodoService(repository).instance
   val server = BlazeBuilder[IO]

@@ -14,7 +14,8 @@ lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   scalaVersion := "2.12.12"
 )
 
-lazy val root = project.in(file("."))
+lazy val root = project
+  .in(file("."))
   .aggregate(sharedJS, sharedJVM, js, sw, jvm)
   .settings(commonSettings)
   .settings(
@@ -81,9 +82,9 @@ lazy val jvm = (project in file("jvm"))
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
-      "org.scalatest" %% "scalatest" % "3.0.9" % Test
+      "org.scalatest" %% "scalatest" % "3.2.3" % Test
     ),
     (resources in Compile) += (fullOptJS in (sharedJS, Compile)).value.data,
     (resources in Compile) += (fullOptJS in (js, Compile)).value.data,
     (resources in Compile) += (fullOptJS in (sw, Compile)).value.data
-  ) dependsOn(sharedJS, sharedJVM, js, sw)
+  ) dependsOn (sharedJS, sharedJVM, js, sw)
