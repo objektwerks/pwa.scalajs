@@ -80,7 +80,7 @@ lazy val jvm = (project in file("jvm"))
       "io.circe" %% "circe-generic" % circeVersion,
       "com.github.pureconfig" %% "pureconfig" % "0.9.2",
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
-      "ch.qos.logback" % "logback-classic" % "1.2.5",
+      "ch.qos.logback" % "logback-classic" % "1.2.6",
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
       "org.scalatest" %% "scalatest" % "3.2.10" % Test
     ),
