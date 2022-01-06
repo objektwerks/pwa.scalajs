@@ -2,6 +2,12 @@ PWA Scala.js App
 ----------------
 >Progressive web app ( PWA ) using Scala.js and Http4s.
 
+Install
+-------
+>jsdom **must** be installed locally - **not** globally!
+1. brew install node
+2. npm install jsdom
+
 Dev
 ---
 1. sbt
