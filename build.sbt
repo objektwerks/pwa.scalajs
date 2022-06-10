@@ -11,7 +11,7 @@ val circeVersion = "0.11.1"
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "objektwerks",
   version := "0.1-SNAPSHOT",
-  scalaVersion := "2.12.15"
+  scalaVersion := "2.12.16"
 )
 
 lazy val root = project
