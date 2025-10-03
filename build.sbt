@@ -42,7 +42,7 @@ lazy val js = (project in file("js"))
   .settings(
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "2.8.1",
-      "org.scala-js" %%% "scalajs-java-time" % "2.6.0",
+      "org.scala-js" %%% "scalajs-java-time" % "1.0.0",
       "io.circe" %%% "circe-core" % circeVersion,
       "io.circe" %%% "circe-generic" % circeVersion,
       "io.circe" %%% "circe-parser" % circeVersion
