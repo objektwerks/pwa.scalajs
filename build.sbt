@@ -7,6 +7,7 @@ val catsVersion = "1.6.1"
 val doobieVersion = "0.5.4"
 val http4sVersion = "0.18.24"
 val circeVersion = "0.11.1"
+val scalajsDomVersion = "2.8.1"
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ Seq(
   organization := "objektwerks",
