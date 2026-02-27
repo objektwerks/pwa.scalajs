@@ -42,7 +42,7 @@ lazy val js = (project in file("js"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.8.1",
+      "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion,
       "org.scala-js" %%% "scalajs-java-time" % "1.0.0",
       "io.circe" %%% "circe-core" % circeVersion,
       "io.circe" %%% "circe-generic" % circeVersion,
@@ -56,7 +56,7 @@ lazy val sw = (project in file("sw"))
   .settings(
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.8.1"
+      "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion
     )
   )
 
